@@ -27,6 +27,7 @@ public class FdK_UE5 : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] {
 			"FdK_UE5",
+			"FdK_UE5/Scheduler",
 			"FdK_UE5/Variant_Strategy",
 			"FdK_UE5/Variant_Strategy/UI",
 			"FdK_UE5/Variant_TwinStick",
