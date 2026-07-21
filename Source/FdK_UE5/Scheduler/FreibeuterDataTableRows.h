@@ -52,8 +52,9 @@ struct FFreibeuterPortDistanceRow : public FTableRowBase
 };
 
 /**
- * One upgrade trader. Phase 0 only populates a single Cannon row; tier-2 unlock logic is Phase 1
- * (CLAUDE.md §3). Not read by the scheduler demo -- included to prove the data-driven pattern.
+ * One upgrade trader. The dossier (FREIBE_1.md §3) fixes trader type per port, so the row name is
+ * the owning PortId, not the upgrade type. Only Puerto Plata (Cannons) is populated for Phase 0's
+ * one-trader scope; the other 4 real traders are Phase 1 (all 5 traders, tier unlocks).
  */
 USTRUCT(BlueprintType)
 struct FFreibeuterTraderRow : public FTableRowBase
@@ -77,4 +78,22 @@ struct FFreibeuterTraderRow : public FTableRowBase
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Freibeuter")
 	int32 DaysUnsold = 0;
+};
+
+/**
+ * Per-good economy tuning: base sale value and pirate-encounter odds. Row name is the good's enum
+ * entry name ("Wheat", "Wood", "Tobacco", "Rum"). Both fields are unrecovered numbers (FREIBE_1.md
+ * §10 items 3 and 5) -- moving them here (rather than switch-statements in C++) is what makes them
+ * retunable without recompiling, per CLAUDE.md §2.2.
+ */
+USTRUCT(BlueprintType)
+struct FFreibeuterGoodRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Freibeuter")
+	int32 BaseValuePerUnit = 0;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Freibeuter")
+	float EncounterChance = 0.f;
 };

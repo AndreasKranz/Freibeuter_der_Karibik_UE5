@@ -80,6 +80,50 @@ struct FFreibeuterShipState
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Freibeuter")
 	TArray<FFreibeuterCargoItem> Cargo;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Freibeuter")
+	int32 Gold = 0;
+
+	/** Phase 0 only has the Cannons trader, so these are tracked directly rather than via a generic per-upgrade-type map (CLAUDE.md: don't add abstraction beyond what's needed). */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Freibeuter")
+	int32 CannonTier1Count = 0;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Freibeuter")
+	int32 CannonTier2Count = 0;
+};
+
+/**
+ * Runtime scarcity tracker for one port: the last day each good was delivered there.
+ * CLAUDE.md §4 data model: Port.lastDeliveryDay[Good] drives the scarcity/starvation payout bonus.
+ * This is session state, not design data, so it lives alongside ships, not in the Port DataTable.
+ */
+USTRUCT()
+struct FFreibeuterPortRuntimeState
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TMap<EFreibeuterGood, int32> LastDeliveryDay;
+};
+
+/**
+ * Runtime stock tracker for one port's trader, seeded from FFreibeuterTraderRow at NewGame but
+ * decremented independently -- mutating the DataTable row itself would corrupt the design asset
+ * with per-playthrough state.
+ */
+USTRUCT()
+struct FFreibeuterTraderRuntimeState
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	int32 Tier1StockRemaining = 0;
+
+	UPROPERTY()
+	int32 Tier2StockRemaining = 0;
+
+	UPROPERTY()
+	bool bInitialized = false;
 };
 
 /** One entry in the scheduler's min-heap, keyed on TriggerDay (CLAUDE.md §2.3). */

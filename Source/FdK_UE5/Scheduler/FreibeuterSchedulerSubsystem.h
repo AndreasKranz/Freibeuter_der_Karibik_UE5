@@ -45,6 +45,26 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Freibeuter|Scheduler")
 	void RunSchedulerDemo();
 
+	/** Starts a fresh Phase 0 playthrough: one player ship, full gold, at San Juan (CLAUDE.md §3/§4). */
+	UFUNCTION(BlueprintCallable, Category = "Freibeuter|TradeLoop")
+	void NewGame();
+
+	/** Loads cargo (must be one of the current port's two produced goods) and commits the player ship to a voyage. */
+	UFUNCTION(BlueprintCallable, Category = "Freibeuter|TradeLoop")
+	void SetSail(FName DestinationPortId, EFreibeuterGood Good, int32 Quantity);
+
+	/** Pops and resolves exactly the player ship's next pending event (Encounter or Arrival), so a human can step through a voyage. */
+	UFUNCTION(BlueprintCallable, Category = "Freibeuter|TradeLoop")
+	void Advance();
+
+	/** Buys the cheapest currently-available Cannon tier (tier 2 only once tier 1 is exhausted) from the port the player ship is docked at. */
+	UFUNCTION(BlueprintCallable, Category = "Freibeuter|TradeLoop")
+	void BuyCannon();
+
+	/** Logs the player ship's day, location, cargo, gold, and VP. */
+	UFUNCTION(BlueprintCallable, Category = "Freibeuter|TradeLoop")
+	void Status();
+
 private:
 	/** Shared voyage-commit path. ForcedEncounterOutcome lets the demo script a guaranteed win/loss (-1 = roll normally, 0 = force loss, 1 = force win); real gameplay code should never pass anything but -1. */
 	void CommitVoyageInternal(int32 ShipId, FName DestinationPortId, const TArray<FFreibeuterCargoItem>& Cargo, bool bEncounterOccurs, int32 ForcedEncounterOutcome = -1);
@@ -66,10 +86,30 @@ private:
 	int32 GetDistanceDays(FName FromPortId, FName ToPortId) const;
 	bool RollForEncounter(const TArray<FFreibeuterCargoItem>& Cargo) const;
 
+	/** Row name a good is stored under in the Goods DataTable -- also its enum entry name ("Wheat", "Wood", "Tobacco", "Rum"). */
+	static FName GetGoodRowName(EFreibeuterGood Good);
+	int32 GetBaseValuePerUnit(EFreibeuterGood Good) const;
+
+	/** Case-insensitive match against the four good names; false if Args[Index] isn't one of them. */
+	static bool ParseGood(const FString& Text, EFreibeuterGood& OutGood);
+
 	int32 RegisterShip(FName ShipName, FName StartPortId);
-	bool EnsureDemoDataTablesLoaded();
+	bool EnsureDataTablesLoaded();
+	void ResetSimulationState();
+	bool HasPendingArrival(int32 ShipId) const;
+
+	/** Sells a ship's cargo on arrival: base value x distance x scarcity per item (CLAUDE.md §4), then clears the cargo and records the delivery. */
+	void SellCargoOnArrival(FFreibeuterShipState& Ship);
+
+	/** Lazily seeds a trader's runtime stock from its DataTable row the first time it's touched. */
+	FFreibeuterTraderRuntimeState* GetOrInitTraderRuntimeState(FName PortId);
 
 	void HandleRunSchedulerDemoCommand(const TArray<FString>& Args, UWorld* InWorld);
+	void HandleNewGameCommand(const TArray<FString>& Args, UWorld* InWorld);
+	void HandleSetSailCommand(const TArray<FString>& Args, UWorld* InWorld);
+	void HandleAdvanceCommand(const TArray<FString>& Args, UWorld* InWorld);
+	void HandleBuyCannonCommand(const TArray<FString>& Args, UWorld* InWorld);
+	void HandleStatusCommand(const TArray<FString>& Args, UWorld* InWorld);
 
 	UPROPERTY(Transient)
 	TArray<FFreibeuterScheduledEvent> EventHeap;
@@ -82,6 +122,12 @@ private:
 	TMap<int32, int32> ShuttleLegsRemaining;
 
 	UPROPERTY(Transient)
+	TMap<FName, FFreibeuterPortRuntimeState> PortRuntimeStates;
+
+	UPROPERTY(Transient)
+	TMap<FName, FFreibeuterTraderRuntimeState> TraderRuntimeStates;
+
+	UPROPERTY(Transient)
 	TObjectPtr<UDataTable> PortDataTable;
 
 	UPROPERTY(Transient)
@@ -90,9 +136,15 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<UDataTable> TraderDataTable;
 
+	UPROPERTY(Transient)
+	TObjectPtr<UDataTable> GoodsDataTable;
+
 	int32 CurrentDay = 0;
 	int32 NextShipId = 1;
 
-	/** Non-owning handle to the registered console command; the console command system owns the object itself. */
-	IConsoleObject* RunSchedulerDemoCommandHandle = nullptr;
+	/** The single ship the interactive Freibeuter.* commands operate on; INDEX_NONE until NewGame runs. */
+	int32 PlayerShipId = INDEX_NONE;
+
+	/** Non-owning handles to the registered console commands; the console command system owns the objects themselves. */
+	TArray<IConsoleObject*> RegisteredConsoleCommands;
 };
