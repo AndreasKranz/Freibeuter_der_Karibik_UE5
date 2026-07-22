@@ -73,3 +73,9 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Claude local settings
+.claude/settings.local.json
+
+# JetBrains Rider (per-machine project cache)
+.idea/
