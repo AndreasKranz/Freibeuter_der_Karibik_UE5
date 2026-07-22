@@ -216,12 +216,14 @@ Realistically: reconstruct the logic from the behavioural descriptions in this d
 1. **The goods-production matrix per port** (which 2 of 4 each of the 8 ports produces / accepts).
 2. **Distance table** between ports in days, and the sail-speed modifier formula.
 3. **Price tables** for each upgrade tier and the decay rate of unsold equipment.
-4. **Trader stock counts** — how many tier-1 and tier-2 items each of the 5 traders holds. This sets the pace of the whole game and is the single most important unknown number.
+4. ~~**Trader stock counts**~~ — **RESOLVED** (confirmed against a physical copy): all non-Residence
+   upgrade types (Cannon, Chest, Sail, Sailor) hold **3 tier-1 / 4 tier-2** items per trader;
+   Residence holds **4 tier-1 / 8 tier-2**.
 5. **Combat resolution formula.**
 6. **Full side-quest list** (confirmed so far: kidnapped merchant's daughter, treasure map/island hunt, deliver a letter to a neighbouring island, escort a dangerous prisoner, hunt the Spanish silver fleet).
 7. **Month-event table** (famine, storm devastating a settlement, silver fleet appearance, siege announcements).
 
-All seven are recoverable from a physical copy: manual + board scan + a few logged playthroughs.
+Six of the original seven remain recoverable only from a physical copy: manual + board scan + a few logged playthroughs.
 
 ---
 

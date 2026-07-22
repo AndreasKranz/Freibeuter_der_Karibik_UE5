@@ -235,8 +235,10 @@ of §2.2 they live in DataTables and can be changed freely.
 1. **Goods-production matrix** — which 2 of 4 goods each of the 8 ports produces vs. accepts.
 2. **Distance table** between ports (in days) + the sail-speed modifier formula.
 3. **Price tables** per upgrade tier + the decay rate of unsold equipment.
-4. **Trader stock counts** — tier-1 and tier-2 item counts per trader. *The single most important unknown;
-   it sets the pace of the whole game.*
+4. ~~**Trader stock counts**~~ — **RESOLVED**, confirmed by the developer against a physical copy of
+   the board game: all non-Residence upgrade types (Cannon, Chest, Sail, Sailor) have **3 tier-1 /
+   4 tier-2** items per trader; Residence has **4 tier-1 / 8 tier-2**. Use these exact counts when
+   populating `DT_FreibeuterTraders` — no longer a placeholder.
 5. **Combat resolution formula** (weighted-probability in the original, widely felt unfair — see §5.1).
 6. **Full side-quest list** (confirmed so far: kidnapped merchant's daughter, treasure-map/island hunt,
    deliver a letter, escort a prisoner, hunt the Spanish silver fleet).
