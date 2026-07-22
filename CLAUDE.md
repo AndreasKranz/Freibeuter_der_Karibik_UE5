@@ -15,6 +15,28 @@
    "Prove the current phase, then move on" is the whole philosophy of this project.
 2. **C++ is the default for essentially all logic. Blueprints are for dressing and layout only.**
    See §2.1. This is non-negotiable and keeps the codebase reviewable across an MCP-driven workflow.
+   
+   
+### 0.1 Autonomous session rules (apply when developer is not present)
+
+These activate during long sessions without the developer present. They supplement the two rules
+above — they do not replace them.
+
+- **Branch:** work exclusively on `agentic`. Never commit directly to `main`.
+- **Commit granularly.** Commit after every logical unit of work (struct definition, system complete,
+  etc.) with a descriptive message. These commits are the audit trail for later review.
+- **Push is permitted and encouraged.** `git push origin agentic` after each commit keeps
+  work backed up to GitHub during long sessions. Never push to `main`.
+- **File scope:** only modify files inside `Source/` and `Config/DataTables/`. Do not touch anything
+  else without explicit prior approval.
+- **No new dependencies.** Do not add plugins, third-party libraries, or new UE modules. Work within
+  the existing project structure.
+- **Open unknowns = stop and mark, don't guess.** If a decision point requires a value or design
+  choice listed in §6, leave a `// TODO(dev): [clear question]` comment and continue around it.
+  Do not invent values that belong in DataTables — they live there precisely so they can be tuned
+  without recompiling.
+- **Phase discipline.** Phase 1 scope only. Do not begin Phase 2 systems (siege escalation,
+  month-boundary events, co-op layer) even if they appear to be a natural next step from current work.
 
 ---
 
