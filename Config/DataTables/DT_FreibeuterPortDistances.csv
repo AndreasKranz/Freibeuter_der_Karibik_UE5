@@ -1,0 +1,7 @@
+Name,PortA,PortB,DistanceDays
+SanJuan_PuertoPlata,SanJuan,PuertoPlata,2
+PuertoPlata_SanJuan,PuertoPlata,SanJuan,2
+SanJuan_Curacao,SanJuan,Curacao,7
+Curacao_SanJuan,Curacao,SanJuan,7
+PuertoPlata_Curacao,PuertoPlata,Curacao,6
+Curacao_PuertoPlata,Curacao,PuertoPlata,6

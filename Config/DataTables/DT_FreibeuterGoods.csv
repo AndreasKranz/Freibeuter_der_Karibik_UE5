@@ -1,0 +1,5 @@
+Name,BaseValuePerUnit,EncounterChance
+Wheat,10,0
+Wood,15,0
+Tobacco,40,0.3
+Rum,70,0.5

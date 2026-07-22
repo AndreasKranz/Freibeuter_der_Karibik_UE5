@@ -1,0 +1,9 @@
+Name,DisplayName,ProducesGoodA,ProducesGoodB,AcceptsGoodA,AcceptsGoodB
+SanJuan,"San Juan",Wheat,Wood,Tobacco,Rum
+Cartagena,"Cartagena",Tobacco,Rum,Wheat,Wood
+PuertoPlata,"Puerto Plata",Wheat,Tobacco,Wood,Rum
+Kingstown,"Kingstown",Wood,Rum,Wheat,Tobacco
+Prinzapolca,"Prinzapolca",Wheat,Rum,Wood,Tobacco
+Camarco,"Camarco",Wood,Tobacco,Wheat,Rum
+Curacao,"Curaçao",Tobacco,Rum,Wheat,Wood
+SpringPoint,"Spring Point",Wheat,Wood,Tobacco,Rum
